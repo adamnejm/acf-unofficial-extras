@@ -79,7 +79,7 @@ ACF_DefineGearbox( "4Gear-T-T", {
 
 -- Transaxial Dual Clutch
 
-ACF_DefineGearbox( "4Gear-T-T", {
+ACF_DefineGearbox( "4Gear-TD-T", {
 	name = "4-Speed, Transaxial, Tiny, Dual Clutch",
 	desc = "A tiny, and light 4 speed gearbox, with a somewhat limited max torque rating. The dual clutch allows you to apply power and brake each side independently\n\nThe Final Drive slider is a multiplier applied to all the other gear ratios",
 	model = "models/engines/transaxial_t.mdl",
