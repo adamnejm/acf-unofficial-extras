@@ -2,9 +2,9 @@
 if SERVER then
 
 		hook.Add("OnEntityCreated","ACFE_Inject",function(ent)
-			if ent and ent:IsValid() and ent:GetClass() == "acf_engine" and not ent.acfe_detected then
+			if ent and ent:IsValid() and ent:GetClass() == "acf_engine" and not ent.acfe_detected then 
 				ent.oldUpdate = ent.Update
-				if ent.oldUpdate then
+				if ent.oldUpdate and not ACF.Repositories then --acf3 fix
 					
 					ent.Update = function(self,ArgsTable) --dirty motherfuckers  dirty fix
 					if self.Active then return false, "Turn off the engine before updating it!" end
@@ -98,17 +98,17 @@ if SERVER then
 			if string.find(ent:GetModel(), "/turbine") then
 				local model = ent:GetModel()
 				if string.find(model,"turbine_l.mdl") then
-					ent.MaxThrust = 192
+					ent.MaxThrust = 256
 				elseif string.find(model,"turbine_m.mdl") then
-					ent.MaxThrust = 96
+					ent.MaxThrust = 128
 				elseif string.find(model,"turbine_s.mdl") then
-					ent.MaxThrust = 48
+					ent.MaxThrust = 64
 				end
 				
 				
 				
 				
-				Wire_AdjustInputs(ent,{"Active", "Throttle", "Thrust", "FlameEffect", "FlameColor [VECTOR]"})
+				
 				--[[ent.oldTriggerInput = ent.TriggerInput
 					if ent.oldTriggerInput then
 					ent.TriggerInput = function(self, iname, value)
@@ -122,52 +122,56 @@ if SERVER then
 					ent.oldTriggerInput = ent.TriggerInput
 				end--]]
 				
-			ent.TriggerInput = function(self,iname,value) --overwrite original func cuz overwriting hooks is gay 
-					if (iname == "Throttle") then
-						self.Throttle = math.Clamp(value,0,100)/100
-					end
-					if (iname == "Active") then
-						if (value > 0 and not self.Active and self.Legal) then
-							--make sure we have fuel
-							local HasFuel
-							if not self.RequiresFuel then
-								HasFuel = true
-							else 
-								for _,fueltank in pairs(self.FuelLink) do
-									if fueltank.Fuel > 0 and fueltank.Active and fueltank.Legal then HasFuel = true break end
-								end
-							end
-							
-							if HasFuel then
-								self.Active = true
-								if not (self.SoundPath=="") then
-									self.Sound = CreateSound(self, self.SoundPath)
-									self.Sound:PlayEx(0.5,100)
-								end
-								self:ACFInit()
-							end
-						elseif (value <= 0 and self.Active) then
-							self.Active = false
-							self.FlyRPM = 0
-							self.RPM = {}
-							self.RPM[1] = self.IdleRPM
-							if self.Sound then
-								self.Sound:Stop()
-							end
-							self.Sound = nil
-							Wire_TriggerOutput( self, "RPM", 0 )
-							Wire_TriggerOutput( self, "Torque", 0 )
-							Wire_TriggerOutput( self, "Power", 0 )
-							Wire_TriggerOutput( self, "Fuel Use", 0 )
-						end
-					end
-
-					if iname == "Thrust" then self.Thrust = math.Clamp(value,0,100) end
-					if iname == "FlameEffect" then self:SetNetworkedBool("acfe_effects", (value >0 and true or false) ) end
-					if iname == "FlameColor" then self:SetNetworkedVector("acfe_effect_color", Vector(math.Clamp(value.x or 0, 0, 255), math.Clamp(value.y or 0, 0, 255), math.Clamp(value.z or 0, 0, 255)) ) end
-										
-			end
+			if not ACF.Repositories then -- acf 3...
 				
+				Wire_AdjustInputs(ent,{"Active", "Throttle", "Thrust", "FlameEffect", "FlameColor [VECTOR]"})
+				ent.TriggerInput = function(self,iname,value) --overwrite original func cuz overwriting hooks is gay 
+
+						if (iname == "Throttle") then
+							self.Throttle = math.Clamp(value,0,100)/100
+						end
+						if (iname == "Active") then
+							if (value > 0 and not self.Active and self.Legal) then
+								--make sure we have fuel
+								local HasFuel
+								if not self.RequiresFuel then
+									HasFuel = true
+								else 
+									for _,fueltank in pairs(self.FuelLink) do
+										if fueltank.Fuel > 0 and fueltank.Active and fueltank.Legal then HasFuel = true break end
+									end
+								end
+								
+								if HasFuel then
+									self.Active = true
+									if not (self.SoundPath=="") then
+										self.Sound = CreateSound(self, self.SoundPath)
+										self.Sound:PlayEx(0.5,100)
+									end
+									self:ACFInit()
+								end
+							elseif (value <= 0 and self.Active) then
+								self.Active = false
+								self.FlyRPM = 0
+								self.RPM = {}
+								self.RPM[1] = self.IdleRPM
+								if self.Sound then
+									self.Sound:Stop()
+								end
+								self.Sound = nil
+								Wire_TriggerOutput( self, "RPM", 0 )
+								Wire_TriggerOutput( self, "Torque", 0 )
+								Wire_TriggerOutput( self, "Power", 0 )
+								Wire_TriggerOutput( self, "Fuel Use", 0 )
+							end
+						end
+
+						if iname == "Thrust" then self.Thrust = math.Clamp(value,0,100) end
+						if iname == "FlameEffect" then self:SetNetworkedBool("acfe_effects", (value >0 and true or false) ) end
+						if iname == "FlameColor" then self:SetNetworkedVector("acfe_effect_color", Vector(math.Clamp(value.x or 0, 0, 255), math.Clamp(value.y or 0, 0, 255), math.Clamp(value.z or 0, 0, 255)) ) end
+											
+				end
+			end	
 				
 
 				timer.Create("acfe_turbine_"..ent:EntIndex().."_update", 0.1, 0, function()
@@ -222,17 +226,17 @@ if SERVER then
 				if string.find(model,"pulsejetl.mdl") then
 					ent.TraceSize = 350
 					ent.SoundOffPitch=100
-					ent.MaxThrust=192
+					ent.MaxThrust=256
 					ent.Soundlevel=110
 				elseif string.find(model,"pulsejetm.mdl") then
 					ent.TraceSize = 225
 					ent.SoundOffPitch=150
-					ent.MaxThrust=96
+					ent.MaxThrust=128
 					ent.Soundlevel=100
 				elseif string.find(model,"pulsejets.mdl") then
 					ent.TraceSize = 100
 					ent.SoundOffPitch=200
-					ent.MaxThrust=48
+					ent.MaxThrust=64
 					ent.Soundlevel=90
 				end
 				
