@@ -1,6 +1,52 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
+
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE I"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE Inline Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
+
 
 -- Single-cylinder engines
-ACF_DefineEngine( "0.125-I1.2", {
+ACF_DefineEngineold( "0.125-I1.2", {
 	name = "125cc Single",
 	desc = "[ACFE] Very Tiny RC engine",
 	model = "models/engines/1cyltiny.mdl",
@@ -17,7 +63,7 @@ ACF_DefineEngine( "0.125-I1.2", {
 	limitrpm = 8500
 } )
 
-ACF_DefineEngine( "0.25-I1.2", {
+ACF_DefineEngineold( "0.25-I1.2", {
 	name = "250cc Single 2",
 	desc = "[ACFE] Tiny bike engine",
 	model = "models/engines/1cyls.mdl",
@@ -34,7 +80,7 @@ ACF_DefineEngine( "0.25-I1.2", {
 	limitrpm = 7500
 } )
 
-ACF_DefineEngine( "0.5-I1.2", {
+ACF_DefineEngineold( "0.5-I1.2", {
 	name = "500cc Single 2",
 	desc = "[ACFE] Large single cylinder bike engine",
 	model = "models/engines/1cylm.mdl",
@@ -51,7 +97,7 @@ ACF_DefineEngine( "0.5-I1.2", {
 	limitrpm = 8000
 } )
 
-ACF_DefineEngine( "1.3-I1.2", {
+ACF_DefineEngineold( "1.3-I1.2", {
 	name = "1300cc Single 2",
 	desc = "[ACFE] Ridiculously large single cylinder engine, seriously what the fuck",
 	model = "models/engines/1cylb.mdl",
@@ -72,7 +118,7 @@ ACF_DefineEngine( "1.3-I1.2", {
 --diesel
 
 
-ACF_DefineEngine( "0.3-I1D", {
+ACF_DefineEngineold( "0.3-I1D", {
 	name = "300cc Diesel Single",
 	desc = "[ACFE] Single Cylinder Diesel Engine",
 	model = "models/engines/1cylsml.mdl",
@@ -89,7 +135,7 @@ ACF_DefineEngine( "0.3-I1D", {
 	limitrpm = 5000
 } )
 
-ACF_DefineEngine( "0.5-I1D", {
+ACF_DefineEngineold( "0.5-I1D", {
 	name = "500cc Diesel Single",
 	desc = "[ACFE] Large single cylinder diesel engine",
 	model = "models/engines/1cylmed.mdl",
@@ -106,7 +152,7 @@ ACF_DefineEngine( "0.5-I1D", {
 	limitrpm = 4300
 } )
 
-ACF_DefineEngine( "1.3-I1D", {
+ACF_DefineEngineold( "1.3-I1D", {
 	name = "1300cc Diesel Single",
 	desc = "[ACFE] Larger single cylinder diesel engine, wubwubwubwubwub",
 	model = "models/engines/1cylbig.mdl",
@@ -124,7 +170,7 @@ ACF_DefineEngine( "1.3-I1D", {
 } )
 
 
-ACF_DefineEngine( "0.3-I1D2", {
+ACF_DefineEngineold( "0.3-I1D2", {
 	name = "300cc Diesel Single 2",
 	desc = "[ACFE] Single Cylinder Diesel Engine",
 	model = "models/engines/1cyls.mdl",
@@ -141,7 +187,7 @@ ACF_DefineEngine( "0.3-I1D2", {
 	limitrpm = 5000
 } )
 
-ACF_DefineEngine( "0.5-I1D2", {
+ACF_DefineEngineold( "0.5-I1D2", {
 	name = "500cc Diesel Single 2",
 	desc = "[ACFE] Large single cylinder diesel engine",
 	model = "models/engines/1cylm.mdl",
@@ -158,7 +204,7 @@ ACF_DefineEngine( "0.5-I1D2", {
 	limitrpm = 4300
 } )
 
-ACF_DefineEngine( "1.3-I1D2", {
+ACF_DefineEngineold( "1.3-I1D2", {
 	name = "1300cc Diesel Single 2",
 	desc = "[ACFE] Larger single cylinder diesel engine, wubwubwubwubwub",
 	model = "models/engines/1cylb.mdl",

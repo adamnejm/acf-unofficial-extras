@@ -1,9 +1,53 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE I"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE Inline Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 -- Inline 8 engines
 
 -- Petrol
 
-ACF_DefineEngine( "3.4-I8", {
+ACF_DefineEngineold( "3.4-I8", {
 	name = "3.4L I8 Petrol",
 	desc = "[ACFE] Inline 8 small yo",
 	model = "models/engines/i8sml.mdl",
@@ -20,7 +64,7 @@ ACF_DefineEngine( "3.4-I8", {
 	limitrpm = 6000
 } )
 
-ACF_DefineEngine( "5.6-I8", {
+ACF_DefineEngineold( "5.6-I8", {
 	name = "5.6L I8 Petrol",
 	desc = "[ACFE] Inline 8 Medium yo",
 	model = "models/engines/i8med.mdl",
@@ -37,7 +81,7 @@ ACF_DefineEngine( "5.6-I8", {
 	limitrpm = 5800
 } )
 
-ACF_DefineEngine( "9.0-I8", {
+ACF_DefineEngineold( "9.0-I8", {
 	name = "9.0L I8 Petrol",
 	desc = "[ACFE] Inline 8 large yo",
 	model = "models/engines/i8lrg.mdl",
@@ -58,7 +102,7 @@ ACF_DefineEngine( "9.0-I8", {
 
 -- Diesel
 
-ACF_DefineEngine( "4.0-I8", {
+ACF_DefineEngineold( "4.0-I8", {
 	name = "4.0L I8 Diesel",
 	desc = "[ACFE] Inline 8 small in diesel",
 	model = "models/engines/i8sml.mdl",
@@ -75,7 +119,7 @@ ACF_DefineEngine( "4.0-I8", {
 	limitrpm = 4000
 } )
 
-ACF_DefineEngine( "6.0-I8", {
+ACF_DefineEngineold( "6.0-I8", {
 	name = "6.0L I8 Diesel",
 	desc = "[ACFE] Inline 8 medium in diesel",
 	model = "models/engines/i8med.mdl",
@@ -92,7 +136,7 @@ ACF_DefineEngine( "6.0-I8", {
 	limitrpm = 3400
 } )
 
-ACF_DefineEngine( "11.0-I8", {
+ACF_DefineEngineold( "11.0-I8", {
 	name = "11.0L I8 Diesel",
 	desc = "[ACFE] Inline 8 Large in diesel",
 	model = "models/engines/i8lrg.mdl",

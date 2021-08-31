@@ -1,4 +1,50 @@
-ACF_DefineEngine( "X12-4.8", {
+if ACF.Version then --fallback to old acf, its not set in acf3
+
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE X"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE X Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
+
+ACF_DefineEngineold( "X12-4.8", {
 	name = "X12 3.2L Petrol",
 	desc = "[ACFE] A tiny, old worn-out X12 engine.",
 	model = "models/engines/x12s.mdl",
@@ -15,7 +61,7 @@ ACF_DefineEngine( "X12-4.8", {
 	limitrpm = 4900
 } )
 
-ACF_DefineEngine( "X12-18.6", {
+ACF_DefineEngineold( "X12-18.6", {
 	name = "X12 18.6L Petrol",
 	desc = "[ACFE] Mid range X12 engine, thirsty and smooth",
 	model = "models/engines/x12m.mdl",
@@ -32,7 +78,7 @@ ACF_DefineEngine( "X12-18.6", {
 	limitrpm = 3900
 } )
 
-ACF_DefineEngine( "X12-42.9", {
+ACF_DefineEngineold( "X12-42.9", {
 	name = "X12 42.9L Petrol",
 	desc = "[ACFE] Massive X12 monster, perfect for a vibrator.",
 	model = "models/engines/x12b.mdl",

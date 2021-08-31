@@ -1,4 +1,51 @@
-ACF_DefineEngine( "VR8-5.7", {
+if ACF.Version then --fallback to old acf, its not set in acf3
+
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE VR"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE VR Engines",
+	})
+
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
+
+ACF_DefineEngineold( "VR8-5.7", {
 	name = "VR8 5.7L Petrol",
 	desc = "[ACFE] Car sized petrol engine, good power and mid range torque",
 	model = "models/engines/vr8s.mdl",
@@ -15,7 +62,7 @@ ACF_DefineEngine( "VR8-5.7", {
 	limitrpm = 6500
 } )
 
-ACF_DefineEngine( "VR8-9.0", {
+ACF_DefineEngineold( "VR8-9.0", {
 	name = "VR8 9.0L Petrol",
 	desc = "[ACFE] Thirsty, giant VR8, for medium applications",
 	model = "models/engines/vr8m.mdl",
@@ -32,7 +79,7 @@ ACF_DefineEngine( "VR8-9.0", {
 	limitrpm = 5500
 } )
 
-ACF_DefineEngine( "VR8-18.0", {
+ACF_DefineEngineold( "VR8-18.0", {
 	name = "VR8 18.0L Petrol",
 	desc = "[ACFE] American gasoline tank VR8, good overall power and torque and fairly lightweight",
 	model = "models/engines/vr8b.mdl",

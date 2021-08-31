@@ -1,9 +1,53 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE I"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE Inline Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 -- Inline 12 engines
 
 -- Petrol
 
-ACF_DefineEngine( "4.4-I12", {
+ACF_DefineEngineold( "4.4-I12", {
 	name = "4.4L I12 Petrol",
 	desc = "[ACFE] Incredible stupid 4.4L I12 engine made for fun",
 	model = "models/engines/inline12s.mdl",
@@ -20,7 +64,7 @@ ACF_DefineEngine( "4.4-I12", {
 	limitrpm = 3500
 } )
 
-ACF_DefineEngine( "9.6-I12", {
+ACF_DefineEngineold( "9.6-I12", {
 	name = "9.6L I12 Petrol",
 	desc = "[ACFE] Medium 9.6L I12 engine made for fun",
 	model = "models/engines/inline12m.mdl",
@@ -37,7 +81,7 @@ ACF_DefineEngine( "9.6-I12", {
 	limitrpm = 3600
 } )
 
-ACF_DefineEngine( "30.0-I12", {
+ACF_DefineEngineold( "30.0-I12", {
 	name = "30.0L I12 Petrol",
 	desc = "[ACFE] Oh my god 30 liters in 12 cylinders.. fuck the duck",
 	model = "models/engines/inline12b.mdl",
@@ -54,7 +98,7 @@ ACF_DefineEngine( "30.0-I12", {
 	limitrpm = 2850
 } )
 
-ACF_DefineEngine( "65.0-I12", {
+ACF_DefineEngineold( "65.0-I12", {
 	name = "65.0L I12 Petrol",
 	desc = "[ACFE] OH MY GOD, IS THIS A AN ENGINE FROM AN AIRCRAFT CARRIER?",
 	model = "models/engines/inline12h.mdl",
@@ -73,7 +117,7 @@ ACF_DefineEngine( "65.0-I12", {
 
 -- Diesel
 
-ACF_DefineEngine( "6.0-I12", {
+ACF_DefineEngineold( "6.0-I12", {
 	name = "6.0L I12 Diesel",
 	desc = "[ACFE] Tank sized I12 diesel, good, wide powerband",
 	model = "models/engines/inline12s.mdl",
@@ -90,7 +134,7 @@ ACF_DefineEngine( "6.0-I12", {
 	limitrpm = 2000
 } )
 
-ACF_DefineEngine( "13.0-I12", {
+ACF_DefineEngineold( "13.0-I12", {
 	name = "13.0L I12 Diesel",
 	desc = "[ACFE] Truck duty I6, good overall powerband and torque",
 	model = "models/engines/inline12m.mdl",
@@ -107,7 +151,7 @@ ACF_DefineEngine( "13.0-I12", {
 	limitrpm = 3600
 } )
 
-ACF_DefineEngine( "40.0-I12", {
+ACF_DefineEngineold( "40.0-I12", {
 	name = "40.0L I12 Diesel",
 	desc = "[ACFE] OMG 40 LITERS! This engine sucks more than my mom!",
 	model = "models/engines/inline12b.mdl",
@@ -124,7 +168,7 @@ ACF_DefineEngine( "40.0-I12", {
 	limitrpm = 2000
 } )
 
-ACF_DefineEngine( "80.0-I12", {
+ACF_DefineEngineold( "80.0-I12", {
 	name = "80.0L I12 Diesel",
 	desc = "[ACFE] 80 Liters, when you turn it on the world rotates in other direction!",
 	model = "models/engines/inline12h.mdl",

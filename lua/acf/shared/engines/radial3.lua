@@ -1,7 +1,51 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE R"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE Radial Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 -- Radial engines
 
-ACF_DefineEngine( "R3-1.2", {
+ACF_DefineEngineold( "R3-1.2", {
 	name = "R3 1.2L Petrol",
 	desc = "[ACFE] A tiny, old worn-out radial.",
 	model = "models/engines/radial3s.mdl",
@@ -18,7 +62,7 @@ ACF_DefineEngine( "R3-1.2", {
 	limitrpm = 5000
 } )
 
-ACF_DefineEngine( "R3-5.0", {
+ACF_DefineEngineold( "R3-5.0", {
 	name = "R3 5.0 Petrol",
 	desc = "[ACFE] Mid range radial, thirsty and smooth",
 	model = "models/engines/radial3m.mdl",
@@ -35,7 +79,7 @@ ACF_DefineEngine( "R3-5.0", {
 	limitrpm = 4000
 } )
 
-ACF_DefineEngine( "R3-11.0", {
+ACF_DefineEngineold( "R3-11.0", {
 	name = "R3 11.0L Petrol",
 	desc = "[ACFE] Massive American radial monster, destined for aircraft and heavy things.",
 	model = "models/engines/radial3b.mdl",

@@ -1,4 +1,38 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineGearboxold(id,data)
+		ACF_DefineGearbox(id,data)
+	end
+
+else
+local class = "zACFE CVT"
+local typeoverwrite = nil
+
+	ACF.RegisterGearboxClass(class, {
+		Name		= "ACFE CVT's",
+		CreateMenu	= ACF.ManualGearboxMenu,
+		Gears = {
+			Min	= 0,
+			Max	= 1,
+		}
+	})
+
+	do
+
+		function ACF_DefineGearboxold(id,data)
+			ACF.RegisterGearbox(id, class, {
+				Name		= data.name,
+				Description	= data.desc,
+				Model		= data.model,
+				Mass		= data.weight,
+				Switch		= data.switch,
+				MaxTorque	= data.maxtq,
+			})
+		end
+		
+	end
+
+end
 -- CVT (continuously variable transmission)
 
 -- Weight
@@ -19,7 +53,7 @@ local CVTDesc = "\n\nA CVT will adjust the ratio its first gear to keep an engin
 -- Straight fwclutch
 
 
-ACF_DefineGearbox( "CVT2-ST-T", {
+ACF_DefineGearboxold( "CVT2-ST-T", {
 	name = "CVT2, Straight, Tiny",
 	desc = "A very tiny RC Model straight-through CVT."..CVTDesc,
 	model = "models/engines/flywheelclutcht.mdl",
@@ -40,7 +74,7 @@ ACF_DefineGearbox( "CVT2-ST-T", {
 } )
 
 
-ACF_DefineGearbox( "CVT2-ST-S", {
+ACF_DefineGearboxold( "CVT2-ST-S", {
 	name = "CVT2, Straight, Small",
 	desc = "A light duty straight-through CVT."..CVTDesc,
 	model = "models/engines/flywheelclutchs.mdl",
@@ -60,7 +94,7 @@ ACF_DefineGearbox( "CVT2-ST-S", {
 	}
 } )
 
-ACF_DefineGearbox( "CVT2-ST-M", {
+ACF_DefineGearboxold( "CVT2-ST-M", {
 	name = "CVT2, Straight, Medium",
 	desc = "A medium straight-through CVT."..CVTDesc,
 	model = "models/engines/flywheelclutchm.mdl",
@@ -80,7 +114,7 @@ ACF_DefineGearbox( "CVT2-ST-M", {
 	}
 } )
 
-ACF_DefineGearbox( "CVT2-ST-L", {
+ACF_DefineGearboxold( "CVT2-ST-L", {
 	name = "CVT2, Straight, Large",
 	desc = "A massive straight-through CVT designed for high torque applications."..CVTDesc,
 	model = "models/engines/flywheelclutchb.mdl",

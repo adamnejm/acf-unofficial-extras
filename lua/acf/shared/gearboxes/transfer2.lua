@@ -1,8 +1,42 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineGearboxold(id,data)
+		ACF_DefineGearbox(id,data)
+	end
+
+else
+local class = "zACFE Transfercase"
+local typeoverwrite = nil
+
+	ACF.RegisterGearboxClass(class, {
+		Name		= "ACFE Transfercases",
+		CreateMenu	= ACF.ManualGearboxMenu,
+		Gears = {
+			Min	= 0,
+			Max	= 1,
+		}
+	})
+
+	do
+
+		function ACF_DefineGearboxold(id,data)
+			ACF.RegisterGearbox(id, class, {
+				Name		= data.name,
+				Description	= data.desc,
+				Model		= data.model,
+				Mass		= data.weight,
+				Switch		= data.switch,
+				MaxTorque	= data.maxtq,
+			})
+		end
+		
+	end
+
+end
 
 -- Inline
 
-ACF_DefineGearbox( "2Gear-L-T", {
+ACF_DefineGearboxold( "2Gear-L-T", {
 	name = "Transfer case, Inline, Tiny",
 	desc = "2 speed gearbox, useful for low range and rc vehicles",
 	model = "models/engines/linear_t.mdl",
@@ -23,7 +57,7 @@ ACF_DefineGearbox( "2Gear-L-T", {
 
 -- Transaxial
 
-ACF_DefineGearbox( "2Gear-T-T", {
+ACF_DefineGearboxold( "2Gear-T-T", {
 	name = "Transfer case, Tiny",
 	desc = "2 speed gearbox, useful for low range and rc vehicles",
 	model = "models/engines/transaxial_t.mdl",

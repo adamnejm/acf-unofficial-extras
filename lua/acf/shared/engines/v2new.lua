@@ -1,7 +1,51 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE V"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE V Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 -- V-Twin Diesel engines
 
-ACF_DefineEngine( "0.8-V2", {
+ACF_DefineEngineold( "0.8-V2", {
 	name = "836cc V-Twin Diesel",
 	desc = "[ACFE] Twin cylinder Diesel bike engine, torquey for its size",
 	model = "models/engines/v-twins2.mdl",
@@ -18,7 +62,7 @@ ACF_DefineEngine( "0.8-V2", {
 	limitrpm = 6000
 } )
 
-ACF_DefineEngine( "1.6-V2", {
+ACF_DefineEngineold( "1.6-V2", {
 	name = "1600cc V-Twin Diesel",
 	desc = "[ACFE] Large displacement vtwin diesel engine",
 	model = "models/engines/v-twinm2.mdl",
@@ -35,7 +79,7 @@ ACF_DefineEngine( "1.6-V2", {
 	limitrpm = 5250
 } )
 
-ACF_DefineEngine( "3.2-V2", {
+ACF_DefineEngineold( "3.2-V2", {
 	name = "3100cc V-Twin Diesel",
 	desc = "[ACFE] Huge fucking Vtwin DIESEL 'MURRICA FUCK YEAH FUCK GREENPEACE",
 	model = "models/engines/v-twinl2.mdl",

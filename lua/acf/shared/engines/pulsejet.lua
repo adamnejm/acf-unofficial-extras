@@ -1,7 +1,51 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE PJ"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE Pulsejets",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 --Pulsejets 
 
-ACF_DefineEngine( "Pulsejet-Small", {
+ACF_DefineEngineold( "Pulsejet-Small", {
 	name = "Pulsejet, Small, Transaxial",
 	desc = "[ACFE] A small Pulsejet\n\nPulsejets deliver thrust and noise. lil' screamer.",
 	model = "models/engines/pulsejets.mdl",
@@ -22,7 +66,7 @@ ACF_DefineEngine( "Pulsejet-Small", {
 	flywheeloverride = 1
 } )
 
-ACF_DefineEngine( "Pulsejet-Medium", {
+ACF_DefineEngineold( "Pulsejet-Medium", {
 	name = "Pulsejet, Medium, Transaxial",
 	desc = "[ACFE] A small Pulsejet\n\nPulsejets deliver thrust and noise. german V-1 approved.",
 	model = "models/engines/pulsejetm.mdl",
@@ -43,7 +87,7 @@ ACF_DefineEngine( "Pulsejet-Medium", {
 	flywheeloverride = 1
 } )
 
-ACF_DefineEngine( "Pulsejet-Large", {
+ACF_DefineEngineold( "Pulsejet-Large", {
 	name = "Pulsejet, Large, Transaxial",
 	desc = "[ACFE] A small Pulsejet\n\nPulsejets deliver thrust and a lot of noise. best way to wake up your neighbourhood.",
 	model = "models/engines/pulsejetl.mdl",

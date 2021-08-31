@@ -1,3 +1,38 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
+
+	function ACF_DefineGearboxold(id,data)
+		ACF_DefineGearbox(id,data)
+	end
+
+else
+local class = "zACFE Gearbox"
+local typeoverwrite = nil
+
+	ACF.RegisterGearboxClass(class, {
+		Name		= "ACFE Gearboxes",
+		CreateMenu	= ACF.ManualGearboxMenu,
+		Gears = {
+			Min	= 0,
+			Max	= 1,
+		}
+	})
+
+	do
+
+		function ACF_DefineGearboxold(id,data)
+			ACF.RegisterGearbox(id, class, {
+				Name		= data.name,
+				Description	= data.desc,
+				Model		= data.model,
+				Mass		= data.weight,
+				Switch		= data.switch,
+				MaxTorque	= data.maxtq,
+			})
+		end
+		
+	end
+
+end
 
 -- 6-Speed gearboxes
 
@@ -15,7 +50,7 @@ local StTB = 1.25 --straight torque bonus multiplier
 
 -- Inline
 
-ACF_DefineGearbox( "6Gear-L-T", {
+ACF_DefineGearboxold( "6Gear-L-T", {
 	name = "6-Speed, Inline, Tiny",
 	desc = "A Tiny and light 6 speed inline gearbox, with a limited max torque rating.",
 	model = "models/engines/linear_t.mdl",
@@ -38,7 +73,7 @@ ACF_DefineGearbox( "6Gear-L-T", {
 
 -- Inline Dual Clutch
 
-ACF_DefineGearbox( "6Gear-LD-T", {
+ACF_DefineGearboxold( "6Gear-LD-T", {
 	name = "6-Speed, Inline, Tiny, Dual Clutch",
 	desc = "A Tiny and light 6 speed inline gearbox, with a limited max torque rating. The dual clutch allows you to apply power and brake each side independently\n\nThe Final Drive slider is a multiplier applied to all the other gear ratios",
 	model = "models/engines/linear_t.mdl",
@@ -62,7 +97,7 @@ ACF_DefineGearbox( "6Gear-LD-T", {
 
 -- Transaxial
 
-ACF_DefineGearbox( "6Gear-T-T", {
+ACF_DefineGearboxold( "6Gear-T-T", {
 	name = "6-Speed, Transaxial, Tiny",
 	desc = "A Tiny and light 6 speed gearbox, with a limited max torque rating.",
 	model = "models/engines/transaxial_t.mdl",
@@ -86,7 +121,7 @@ ACF_DefineGearbox( "6Gear-T-T", {
 
 -- Transaxial Dual Clutch
 
-ACF_DefineGearbox( "6Gear-TD-T", {
+ACF_DefineGearboxold( "6Gear-TD-T", {
 	name = "6-Speed, Transaxial, Tiny, Dual Clutch",
 	desc = "A Tiny and light 6 speed gearbox, with a limited max torque rating. The dual clutch allows you to apply power and brake each side independently\n\nThe Final Drive slider is a multiplier applied to all the other gear ratios",
 	model = "models/engines/transaxial_t.mdl",
@@ -111,7 +146,7 @@ ACF_DefineGearbox( "6Gear-TD-T", {
 
 -- Straight-through gearboxes
 
-ACF_DefineGearbox( "6Gear-ST-T", {
+ACF_DefineGearboxold( "6Gear-ST-T", {
 	name = "6-Speed, Straight, Tiny",
 	desc = "A Tiny and light 6 speed straight-through gearbox.",
 	model = "models/engines/t5tiny.mdl",

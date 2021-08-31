@@ -1,9 +1,53 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineEngineold(id,data)
+		ACF_DefineEngine(id,data)
+	end
+
+else
+local class = "zACFE V"
+local typeoverwrite = nil
+-- Flat 2 engines
+	ACF.RegisterEngineClass(class, {
+		Name = "ACFE V Engines",
+	})
+
+	do
+
+		function ACF_DefineEngineold(id,data)
+			local Fueltype = {}
+			if data.fuel == "Petrol"	then Fueltype = { Petrol = true } end
+			if data.fuel == "Diesel"	then Fueltype = { Diesel = true } end
+			if data.fuel == "Multifuel" then Fueltype = { Petrol = true, Diesel = true } end
+			if data.fuel == "Electric"	then Fueltype = { Electric = true } end
+			ACF.RegisterEngine(id, class, {
+				Name		 = data.name,
+				Description	 = data.desc,
+				Model		 = data.model,
+				Sound		 = data.sound,
+				Fuel		 = Fueltype,
+				Type		 = typeoverwrite or data.enginetype,
+				Mass		 = data.weight,
+				Torque		 = data.torque,
+				FlywheelMass = data.flywheelmass,
+				RPM = {
+					Idle	= data.idlerpm,
+					PeakMin	= data.peakminrpm,
+					PeakMax	= data.peakmaxrpm,
+					Limit	= data.limitrpm,
+				},
+			})
+		end
+		
+	end
+
+	
+end
 -- Inline 12 engines
 
 -- Petrol
 
-ACF_DefineEngine( "20.3-V10HVY", {
+ACF_DefineEngineold( "20.3-V10HVY", {
 	name = "20.3L V10HVY Diesel",
 	desc = "[ACFE] Oh yes V10 Heavy with 20.3 Liters",
 	model = "models/engines/v10hvys.mdl",
@@ -20,7 +64,7 @@ ACF_DefineEngine( "20.3-V10HVY", {
 	limitrpm = 1250
 } )
 
-ACF_DefineEngine( "50.8-V10HVY", {
+ACF_DefineEngineold( "50.8-V10HVY", {
 	name = "50.8L V10HVY Diesel",
 	desc = "[ACFE] huge 50.8L V10 heavy engine made for fun",
 	model = "models/engines/v10hvym.mdl",
@@ -37,7 +81,7 @@ ACF_DefineEngine( "50.8-V10HVY", {
 	limitrpm = 1100
 } )
 
-ACF_DefineEngine( "110.2-V10HVY", {
+ACF_DefineEngineold( "110.2-V10HVY", {
 	name = "110.2L V10HVY Diesel",
 	desc = "[ACFE] Oh my god 110.2 liters in 10 cylinders.. this one must be used with multiple gearboxes to handle the torque",
 	model = "models/engines/v10hvyb.mdl",

@@ -1,4 +1,38 @@
+if ACF.Version then --fallback to old acf, its not set in acf3
 
+	function ACF_DefineGearboxold(id,data)
+		ACF_DefineGearbox(id,data)
+	end
+
+else
+local class = "zACFE Clutch"
+local typeoverwrite = nil
+
+	ACF.RegisterGearboxClass(class, {
+		Name		= "ACFE Clutches",
+		CreateMenu	= ACF.ManualGearboxMenu,
+		Gears = {
+			Min	= 0,
+			Max	= 1,
+		}
+	})
+
+	do
+
+		function ACF_DefineGearboxold(id,data)
+			ACF.RegisterGearbox(id, class, {
+				Name		= data.name,
+				Description	= data.desc,
+				Model		= data.model,
+				Mass		= data.weight,
+				Switch		= data.switch,
+				MaxTorque	= data.maxtq,
+			})
+		end
+		
+	end
+
+end
 -- Clutch
 
 -- Weight
@@ -18,7 +52,7 @@ local CDesc = "A standalone clutch for when a full size gearbox is unnecessary o
 
 -- Straight-through
 
-ACF_DefineGearbox( "Clutch-S-T", {
+ACF_DefineGearboxold( "Clutch-S-T", {
 	name = "Clutch, Straight, Tiny",
 	desc = CDesc,
 	model = "models/engines/flywheelclutcht.mdl",
@@ -33,7 +67,7 @@ ACF_DefineGearbox( "Clutch-S-T", {
 	}
 } )
 
-ACF_DefineGearbox( "Clutch-S-S", {
+ACF_DefineGearboxold( "Clutch-S-S", {
 	name = "Clutch, Straight, Small",
 	desc = CDesc,
 	model = "models/engines/flywheelclutchs.mdl",
@@ -48,7 +82,7 @@ ACF_DefineGearbox( "Clutch-S-S", {
 	}
 } )
 
-ACF_DefineGearbox( "Clutch-S-M", {
+ACF_DefineGearboxold( "Clutch-S-M", {
 	name = "Clutch, Straight, Medium",
 	desc = CDesc,
 	model = "models/engines/flywheelclutchm.mdl",
@@ -63,7 +97,7 @@ ACF_DefineGearbox( "Clutch-S-M", {
 	}
 } )
 
-ACF_DefineGearbox( "Clutch-S-L", {
+ACF_DefineGearboxold( "Clutch-S-L", {
 	name = "Clutch, Straight, Large",
 	desc = CDesc,
 	model = "models/engines/flywheelclutchb.mdl",
