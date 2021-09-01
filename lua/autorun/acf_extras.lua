@@ -98,11 +98,11 @@ if SERVER then
 			if string.find(ent:GetModel(), "/turbine") then
 				local model = ent:GetModel()
 				if string.find(model,"turbine_l.mdl") then
-					ent.MaxThrust = 256
+					ent.MaxThrust =  256
 				elseif string.find(model,"turbine_m.mdl") then
-					ent.MaxThrust = 128
+					ent.MaxThrust =  128
 				elseif string.find(model,"turbine_s.mdl") then
-					ent.MaxThrust = 64
+					ent.MaxThrust =  64
 				end
 				
 				
@@ -224,17 +224,17 @@ if SERVER then
 				
 				local model = ent:GetModel()
 				if string.find(model,"pulsejetl.mdl") then
-					ent.TraceSize = 350
+					ent.TraceSize =  350
 					ent.SoundOffPitch=100
 					ent.MaxThrust=256
 					ent.Soundlevel=110
 				elseif string.find(model,"pulsejetm.mdl") then
-					ent.TraceSize = 225
+					ent.TraceSize =  225
 					ent.SoundOffPitch=150
 					ent.MaxThrust=128
 					ent.Soundlevel=100
 				elseif string.find(model,"pulsejets.mdl") then
-					ent.TraceSize = 100
+					ent.TraceSize =  100
 					ent.SoundOffPitch=200
 					ent.MaxThrust=64
 					ent.Soundlevel=90

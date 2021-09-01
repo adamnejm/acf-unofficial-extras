@@ -48,7 +48,7 @@ end
 ACF_DefineEngineold( "X16-6.4", {
 	name = "X16 6.4L Petrol",
 	desc = "[ACFE] A tiny, old worn-out X16 engine.",
-	model = "models/engines/X16s.mdl",
+	model = "models/engines/x16s.mdl",
 	sound = "acf_engines/r7_petrolsmall.wav",
 	category = "X",
 	fuel = "Petrol",
@@ -65,7 +65,7 @@ ACF_DefineEngineold( "X16-6.4", {
 ACF_DefineEngineold( "X16-24.8", {
 	name = "X16 24.8L Petrol",
 	desc = "[ACFE] Mid range X16 engine, thirsty and smooth",
-	model = "models/engines/X16m.mdl",
+	model = "models/engines/x16m.mdl",
 	sound = "acf_engines/r7_petrolmedium.wav",
 	category = "X",
 	fuel = "Petrol",
@@ -82,7 +82,7 @@ ACF_DefineEngineold( "X16-24.8", {
 ACF_DefineEngineold( "X16-57.2", {
 	name = "X16 57.2L Petrol",
 	desc = "[ACFE] Massive X16 monster, perfect for a vibrator.",
-	model = "models/engines/X16b.mdl",
+	model = "models/engines/x16b.mdl",
 	sound = "acf_engines/r7_petrollarge.wav",
 	category = "X",
 	fuel = "Petrol",
